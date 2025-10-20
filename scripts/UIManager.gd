@@ -26,8 +26,8 @@ func _ready() -> void:
 ## Updates health related UI elements.
 func update_health(current_hp: float, max_hp: float) -> void:
 	if not is_instance_valid(health_bar):
-		health_bar = $Control/HUDBackground/HUDVBox/HealthBar
-		health_label = $Control/HUDBackground/HUDVBox/HealthLabel
+		health_bar = get_node_or_null("Control/HUDBackground/HUDVBox/HealthBar") as ProgressBar
+		health_label = get_node_or_null("Control/HUDBackground/HUDVBox/HealthLabel") as Label
 	if not is_instance_valid(health_bar) or not is_instance_valid(health_label):
 		return
 	health_bar.max_value = max_hp
@@ -37,8 +37,8 @@ func update_health(current_hp: float, max_hp: float) -> void:
 ## Updates experience progress.
 func update_xp(current_xp: float, required_xp: float, level: int) -> void:
 	if not is_instance_valid(xp_bar):
-		xp_bar = $Control/HUDBackground/HUDVBox/XPBar
-		xp_label = $Control/HUDBackground/HUDVBox/XPLabel
+		xp_bar = get_node_or_null("Control/HUDBackground/HUDVBox/XPBar") as ProgressBar
+		xp_label = get_node_or_null("Control/HUDBackground/HUDVBox/XPLabel") as Label
 	if not is_instance_valid(xp_bar) or not is_instance_valid(xp_label):
 		return
 	xp_bar.max_value = required_xp
@@ -48,7 +48,7 @@ func update_xp(current_xp: float, required_xp: float, level: int) -> void:
 ## Displays the run timer in m:ss format.
 func update_timer(seconds: float) -> void:
 	if not is_instance_valid(timer_label):
-		timer_label = $Control/HUDBackground/HUDVBox/TimerLabel
+		timer_label = get_node_or_null("Control/HUDBackground/HUDVBox/TimerLabel") as Label
 	if not is_instance_valid(timer_label):
 		return
 	var minutes := int(seconds) / 60
@@ -58,8 +58,8 @@ func update_timer(seconds: float) -> void:
 ## Shows a quick toast message for upgrade confirmation.
 func display_upgrade_toast(text: String) -> void:
 	if not is_instance_valid(toast_label):
-		toast_label = $Control/ToastLabel
-		toast_timer = $Control/ToastTimer
+		toast_label = get_node_or_null("Control/ToastLabel") as Label
+		toast_timer = get_node_or_null("Control/ToastTimer") as Timer
 	if not is_instance_valid(toast_label) or not is_instance_valid(toast_timer):
 		return
 	toast_label.text = "⭐ %s" % text
@@ -70,7 +70,7 @@ func display_upgrade_toast(text: String) -> void:
 ## Displays equipment drop feedback.
 func flash_equipment_drop(equipment: Dictionary) -> void:
 	if not is_instance_valid(equipment_label):
-		equipment_label = $Control/EquipmentLabel
+		equipment_label = get_node_or_null("Control/EquipmentLabel") as Label
 	if not is_instance_valid(equipment_label):
 		return
 	var rarity: String = equipment.get("rarity", "white")

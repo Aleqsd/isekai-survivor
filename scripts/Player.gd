@@ -3,11 +3,12 @@ class_name Player
 
 ## Base player controller handling movement, combat automation, and stat upgrades.
 
+const UtilsLib := preload("res://scripts/Utils.gd")
+
 signal player_died
 signal xp_threshold_reached(level: int)
 signal hp_changed(current_hp: float, max_hp: float)
 signal xp_changed(current_xp: float, required_xp: float, level: int)
-
 
 @export var move_speed: float = 180.0
 @export var max_hp: float = 100.0
@@ -45,7 +46,7 @@ var aoe_radius_percent: float = 0.0
 var animated_sprite: AnimatedSprite2D = null
 var animation_state: StringName = ""
 var is_attack_animation_active := false
-var facing_direction: int = 1
+var facing_vector: Vector2 = Vector2.DOWN
 
 ## Called when the node enters the scene tree for initialization.
 func _ready() -> void:
@@ -53,7 +54,7 @@ func _ready() -> void:
 	animated_sprite = get_node_or_null("AnimatedSprite2D")
 	if animated_sprite:
 		animated_sprite.animation_finished.connect(Callable(self, "_on_animation_finished"))
-		_update_sprite_flip()
+		_update_sprite_orientation()
 	emit_signal("hp_changed", current_hp, max_hp)
 	emit_signal("xp_changed", current_xp, xp_required, level)
 	UtilsLib.log("green", "✅", "Player ready with stats", {
@@ -74,9 +75,11 @@ func _handle_movement(delta: float) -> void:
 	velocity = input_vector * _get_move_speed()
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * _get_move_speed()
+		if input_vector.length() > 0.1:
+			facing_vector = input_vector.normalized()
 	move_and_slide()
 	_update_movement_animation(input_vector)
-	_update_sprite_flip()
+	_update_sprite_orientation()
 
 ## Automatically seeks enemies and triggers attacks when cooldowns permit.
 func _handle_attack(delta: float) -> void:
@@ -108,6 +111,10 @@ func _process_regen(delta: float) -> void:
 func _execute_attack(target: Enemy) -> void:
 	if target == null or not is_instance_valid(target):
 		return
+	var aim_direction := (target.global_position - global_position)
+	if aim_direction.length() > 0.1:
+		facing_vector = aim_direction.normalized()
+		_update_sprite_orientation()
 	_start_attack_animation()
 	perform_attack(target)
 	var duplicate_roll := randf() * 100.0
@@ -268,14 +275,20 @@ func _update_movement_animation(input_vector: Vector2) -> void:
 	else:
 		_play_animation("idle")
 
-func _update_sprite_flip() -> void:
+## Updates sprite orientation (flip / facing) based on the stored facing vector.
+func _update_sprite_orientation() -> void:
 	if animated_sprite == null:
 		return
-	if velocity.x > 5.0:
-		facing_direction = 1
-	elif velocity.x < -5.0:
-		facing_direction = -1
-	animated_sprite.flip_h = facing_direction < 0
+	var dir := facing_vector
+	if dir == Vector2.ZERO:
+		dir = Vector2.DOWN
+	animated_sprite.rotation = 0.0
+	if abs(dir.x) > abs(dir.y):
+		animated_sprite.flip_h = dir.x < 0
+		animated_sprite.flip_v = false
+	else:
+		animated_sprite.flip_h = false
+		animated_sprite.flip_v = dir.y < 0
 
 ## Plays the requested animation when available, avoiding unnecessary restarts unless forced.
 func _play_animation(name: StringName, force := false) -> void:
@@ -297,7 +310,7 @@ func _start_attack_animation() -> void:
 	if frames == null or not frames.has_animation("attack"):
 		return
 	is_attack_animation_active = true
-	_update_sprite_flip()
+	_update_sprite_orientation()
 	_play_animation("attack", true)
 
 ## Resets after an attack animation finishes so movement can resume animating.
