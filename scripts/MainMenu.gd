@@ -2,11 +2,12 @@ extends Control
 
 ## Main menu controller handling navigation and equipment access.
 
+const UtilsLib := preload("res://scripts/Utils.gd")
 const EquipmentMenuScene := preload("res://ui/EquipmentMenu.tscn")
 
-@onready var start_button: Button = $MarginContainer/VBoxContainer/StartButton
-@onready var equipment_button: Button = $MarginContainer/VBoxContainer/EquipmentButton
-@onready var quit_button: Button = $MarginContainer/VBoxContainer/QuitButton
+@onready var start_button: Button = $CenterPanel/VBox/Buttons/StartButton
+@onready var equipment_button: Button = $CenterPanel/VBox/Buttons/EquipmentButton
+@onready var quit_button: Button = $CenterPanel/VBox/Buttons/QuitButton
 
 var equipment_menu: EquipmentMenu = null
 

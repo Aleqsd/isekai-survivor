@@ -1,17 +1,33 @@
-[gd_resource type="TileSet" load_steps=4 format=3]
+[gd_resource type="TileSet" load_steps=5 format=3]
 
-[ext_resource path="res://assets/map/floor_tile.png" type="Texture2D" id=1]
-[ext_resource path="res://assets/map/wall_tile.png" type="Texture2D" id=2]
+[ext_resource path="res://assets/map/floor_base.png" type="Texture2D" id=1]
+[ext_resource path="res://assets/map/floor_alt.png" type="Texture2D" id=2]
+[ext_resource path="res://assets/map/floor_cracked.png" type="Texture2D" id=3]
+[ext_resource path="res://assets/map/wall_top.png" type="Texture2D" id=4]
 
 [sub_resource type="TileSetAtlasSource" id=1]
 texture = ExtResource("1")
 texture_region_size = Vector2i(16, 16)
+use_texture_padding = true
 
 [sub_resource type="TileSetAtlasSource" id=2]
 texture = ExtResource("2")
 texture_region_size = Vector2i(16, 16)
+use_texture_padding = true
+
+[sub_resource type="TileSetAtlasSource" id=3]
+texture = ExtResource("3")
+texture_region_size = Vector2i(16, 16)
+use_texture_padding = true
+
+[sub_resource type="TileSetAtlasSource" id=4]
+texture = ExtResource("4")
+texture_region_size = Vector2i(16, 16)
+use_texture_padding = true
 
 [resource]
 tile_size = Vector2i(16, 16)
 sources/0 = SubResource("1")
 sources/1 = SubResource("2")
+sources/2 = SubResource("3")
+sources/3 = SubResource("4")

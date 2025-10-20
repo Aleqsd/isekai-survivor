@@ -5,6 +5,7 @@ class_name EquipmentMenu
 
 signal menu_closed
 
+const UtilsLib := preload("res://scripts/Utils.gd")
 
 @onready var item_list: ItemList = $Panel/VBoxContainer/ItemList
 @onready var equip_button: Button = $Panel/VBoxContainer/HBoxContainer/EquipButton

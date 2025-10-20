@@ -3,10 +3,12 @@ extends Control
 ## Handles hero selection before starting a run.
 
 
-@onready var archer_button: Button = $MarginContainer/VBoxContainer/HBoxContainer/ArcherButton
-@onready var mage_button: Button = $MarginContainer/VBoxContainer/HBoxContainer/MageButton
-@onready var warrior_button: Button = $MarginContainer/VBoxContainer/HBoxContainer/WarriorButton
-@onready var back_button: Button = $MarginContainer/VBoxContainer/BackButton
+const UtilsLib := preload("res://scripts/Utils.gd")
+
+@onready var archer_button: Button = $Panel/VBox/HeroButtons/ArcherButton
+@onready var mage_button: Button = $Panel/VBox/HeroButtons/MageButton
+@onready var warrior_button: Button = $Panel/VBox/HeroButtons/WarriorButton
+@onready var back_button: Button = $Panel/VBox/BackButton
 
 func _ready() -> void:
 	archer_button.pressed.connect(Callable(self, "_on_archer_pressed"))

@@ -45,6 +45,7 @@ var aoe_radius_percent: float = 0.0
 var animated_sprite: AnimatedSprite2D = null
 var animation_state: StringName = ""
 var is_attack_animation_active := false
+var facing_direction: int = 1
 
 ## Called when the node enters the scene tree for initialization.
 func _ready() -> void:
@@ -52,6 +53,7 @@ func _ready() -> void:
 	animated_sprite = get_node_or_null("AnimatedSprite2D")
 	if animated_sprite:
 		animated_sprite.animation_finished.connect(Callable(self, "_on_animation_finished"))
+		_update_sprite_flip()
 	emit_signal("hp_changed", current_hp, max_hp)
 	emit_signal("xp_changed", current_xp, xp_required, level)
 	UtilsLib.log("green", "✅", "Player ready with stats", {
@@ -74,6 +76,7 @@ func _handle_movement(delta: float) -> void:
 		velocity = velocity.normalized() * _get_move_speed()
 	move_and_slide()
 	_update_movement_animation(input_vector)
+	_update_sprite_flip()
 
 ## Automatically seeks enemies and triggers attacks when cooldowns permit.
 func _handle_attack(delta: float) -> void:
@@ -265,6 +268,15 @@ func _update_movement_animation(input_vector: Vector2) -> void:
 	else:
 		_play_animation("idle")
 
+func _update_sprite_flip() -> void:
+	if animated_sprite == null:
+		return
+	if velocity.x > 5.0:
+		facing_direction = 1
+	elif velocity.x < -5.0:
+		facing_direction = -1
+	animated_sprite.flip_h = facing_direction < 0
+
 ## Plays the requested animation when available, avoiding unnecessary restarts unless forced.
 func _play_animation(name: StringName, force := false) -> void:
 	if animated_sprite == null:
@@ -285,6 +297,7 @@ func _start_attack_animation() -> void:
 	if frames == null or not frames.has_animation("attack"):
 		return
 	is_attack_animation_active = true
+	_update_sprite_flip()
 	_play_animation("attack", true)
 
 ## Resets after an attack animation finishes so movement can resume animating.

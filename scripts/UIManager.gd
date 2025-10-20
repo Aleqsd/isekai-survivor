@@ -3,6 +3,8 @@ class_name UIManager
 
 ## Manages HUD updates, popups, and feedback messaging.
 
+const UtilsLib := preload("res://scripts/Utils.gd")
+
 
 @onready var health_bar: ProgressBar = $Control/HUDBackground/HUDVBox/HealthBar
 @onready var health_label: Label = $Control/HUDBackground/HUDVBox/HealthLabel

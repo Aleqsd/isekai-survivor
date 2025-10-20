@@ -2,6 +2,8 @@ extends Control
 
 ## Displays end-of-run statistics and allows retrying or returning to the main menu.
 
+const UtilsLib := preload("res://scripts/Utils.gd")
+
 
 @onready var summary_label: Label = $GameOverUI/VBoxContainer/SummaryLabel
 @onready var retry_button: Button = $GameOverUI/VBoxContainer/RetryButton

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource path="res://assets/ui/Action_panel.png" type="Texture2D" id=1]
+[ext_resource path="res://ui/button_theme.tres" type="Theme" id=2]
 
 [node name="GameOverPanel" type="NinePatchRect"]
 layout_mode = 1
@@ -14,10 +15,11 @@ offset_top = -150.0
 offset_right = 200.0
 offset_bottom = 150.0
 texture = ExtResource("1")
-patch_margin_left = 32
-patch_margin_top = 32
-patch_margin_right = 32
-patch_margin_bottom = 32
+patch_margin_left = 24
+patch_margin_top = 24
+patch_margin_right = 24
+patch_margin_bottom = 24
+theme = ExtResource("2")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -38,7 +40,9 @@ text = "Fallen at 00:00 — Level 1"
 [node name="RetryButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 text = "Retry"
+size_flags_horizontal = 3
 
 [node name="MainMenuButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 text = "Main Menu"
+size_flags_horizontal = 3

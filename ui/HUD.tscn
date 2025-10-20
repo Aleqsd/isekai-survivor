@@ -17,15 +17,15 @@ offset_bottom = 0.0
 [node name="HUDBackground" type="NinePatchRect" parent="Control"]
 layout_mode = 1
 anchors_preset = 0
-offset_left = 12.0
-offset_top = 12.0
-offset_right = 348.0
-offset_bottom = 208.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 360.0
+offset_bottom = 224.0
 texture = ExtResource("2")
-patch_margin_left = 32
-patch_margin_top = 32
-patch_margin_right = 32
-patch_margin_bottom = 32
+patch_margin_left = 24
+patch_margin_top = 24
+patch_margin_right = 24
+patch_margin_bottom = 24
 
 [node name="HUDVBox" type="VBoxContainer" parent="Control/HUDBackground"]
 layout_mode = 1

@@ -2,6 +2,8 @@ extends Node2D
 
 ## High-level scene controller that spawns the selected hero and wires systems together.
 
+const UtilsLib := preload("res://scripts/Utils.gd")
+
 
 @onready var player_root: Node2D = $PlayerRoot
 @onready var game_manager: GameManager = $GameManager
