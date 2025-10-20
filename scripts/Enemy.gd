@@ -6,6 +6,7 @@ class_name Enemy
 signal enemy_died(xp_value: int, dropped_equipment: Dictionary)
 signal deal_damage_to_player(amount: float)
 
+const UtilsLib := preload("res://scripts/Utils.gd")
 
 @export var max_hp: float = 30.0
 @export var move_speed: float = 90.0
@@ -13,6 +14,7 @@ signal deal_damage_to_player(amount: float)
 @export var xp_drop: int = 5
 @export var attack_cooldown: float = 1.2
 @export var animation_base_path: String = ""
+@export var show_health_bar := true
 
 var current_hp: float = 30.0
 var target_player: Player = null
@@ -24,6 +26,11 @@ var boss_drop_template: Dictionary = {}
 var animated_sprite: AnimatedSprite2D = null
 var animation_state: StringName = ""
 var is_attack_animation_active := false
+var health_bar_container: Node2D = null
+var health_bar_background: Polygon2D = null
+var health_bar_fill: Polygon2D = null
+const HEALTH_BAR_SIZE := Vector2(28, 4)
+const HEALTH_BAR_OFFSET := Vector2(0, -28)
 
 func _ready() -> void:
 	current_hp = max_hp
@@ -32,6 +39,9 @@ func _ready() -> void:
 	if animated_sprite:
 		animated_sprite.animation_finished.connect(Callable(self, "_on_animation_finished"))
 		_play_animation("idle", true)
+	if show_health_bar:
+		_create_health_bar()
+		_update_health_bar()
 	UtilsLib.log("green", "✅", "Enemy spawned", {
 		"hp": max_hp,
 		"speed": move_speed,
@@ -59,6 +69,7 @@ func _physics_process(delta: float) -> void:
 ## Applies incoming damage and handles death logic.
 func take_damage(amount: float) -> void:
 	current_hp -= amount
+	_update_health_bar()
 	UtilsLib.log("orange", "💥", "Enemy took damage", {"amount": amount, "hp": current_hp})
 	if current_hp <= 0.0:
 		_die()
@@ -152,7 +163,43 @@ func _start_attack_animation() -> void:
 	_play_animation("attack", true)
 
 ## Callback for animation completion so we can resume movement cycles.
-func _on_animation_finished(anim_name: StringName) -> void:
+func _on_animation_finished(anim_name: StringName = &"") -> void:
 	if anim_name == "attack":
 		is_attack_animation_active = false
 		_update_movement_animation()
+
+func _create_health_bar() -> void:
+	if health_bar_container != null:
+		return
+	health_bar_container = Node2D.new()
+	add_child(health_bar_container)
+	health_bar_container.position = HEALTH_BAR_OFFSET - Vector2(HEALTH_BAR_SIZE.x * 0.5, 0)
+	health_bar_container.z_index = 5
+	health_bar_background = _create_bar_polygon(HEALTH_BAR_SIZE, Color(0, 0, 0, 0.6))
+	health_bar_fill = _create_bar_polygon(HEALTH_BAR_SIZE, Color(0.85, 0.25, 0.25))
+	health_bar_container.add_child(health_bar_background)
+	health_bar_container.add_child(health_bar_fill)
+
+func _create_bar_polygon(size: Vector2, color: Color) -> Polygon2D:
+	var poly := Polygon2D.new()
+	poly.color = color
+	poly.polygon = PackedVector2Array([
+		Vector2.ZERO,
+		Vector2(size.x, 0),
+		Vector2(size.x, size.y),
+		Vector2(0, size.y)
+	])
+	return poly
+
+func _update_health_bar() -> void:
+	if health_bar_fill == null or health_bar_background == null:
+		return
+	var ratio: float = clamp(current_hp / max_hp, 0.0, 1.0)
+	var width: float = max(HEALTH_BAR_SIZE.x * ratio, 0.0)
+	var polygon: PackedVector2Array = PackedVector2Array([
+		Vector2.ZERO,
+		Vector2(width, 0),
+		Vector2(width, HEALTH_BAR_SIZE.y),
+		Vector2(0, HEALTH_BAR_SIZE.y)
+	])
+	health_bar_fill.polygon = polygon

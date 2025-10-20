@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scripts/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://assets/ui/Main_tiles.png" type="Texture2D" id=2]
-[ext_resource path="res://assets/ui/Action_panel.png" type="Texture2D" id=3]
+[ext_resource path="res://assets/ui/panel_frame.png" type="Texture2D" id=3]
 [ext_resource path="res://ui/button_theme.tres" type="Theme" id=4]
 
 [node name="MainMenu" type="Control"]

@@ -47,6 +47,10 @@ var animated_sprite: AnimatedSprite2D = null
 var animation_state: StringName = ""
 var is_attack_animation_active := false
 var facing_vector: Vector2 = Vector2.DOWN
+var attack_indicator: Polygon2D = null
+var attack_indicator_timer: Timer = null
+const ATTACK_INDICATOR_DURATION := 0.18
+const ATTACK_INDICATOR_DISTANCE := 28.0
 
 ## Called when the node enters the scene tree for initialization.
 func _ready() -> void:
@@ -55,6 +59,7 @@ func _ready() -> void:
 	if animated_sprite:
 		animated_sprite.animation_finished.connect(Callable(self, "_on_animation_finished"))
 		_update_sprite_orientation()
+	_create_attack_indicator()
 	emit_signal("hp_changed", current_hp, max_hp)
 	emit_signal("xp_changed", current_xp, xp_required, level)
 	UtilsLib.log("green", "✅", "Player ready with stats", {
@@ -311,10 +316,43 @@ func _start_attack_animation() -> void:
 		return
 	is_attack_animation_active = true
 	_update_sprite_orientation()
+	_show_attack_indicator()
 	_play_animation("attack", true)
 
 ## Resets after an attack animation finishes so movement can resume animating.
-func _on_animation_finished(anim_name: StringName) -> void:
+func _on_animation_finished(anim_name: StringName = &"") -> void:
 	if anim_name == "attack":
 		is_attack_animation_active = false
 		_update_movement_animation(velocity)
+
+func _create_attack_indicator() -> void:
+	attack_indicator = Polygon2D.new()
+	attack_indicator.color = Color(1.0, 0.85, 0.3, 0.55)
+	attack_indicator.polygon = PackedVector2Array([
+		Vector2.ZERO,
+		Vector2(14, -6),
+		Vector2(14, 6)
+	])
+	attack_indicator.visible = false
+	attack_indicator.z_index = 10
+	add_child(attack_indicator)
+	attack_indicator_timer = Timer.new()
+	attack_indicator_timer.one_shot = true
+	attack_indicator_timer.wait_time = ATTACK_INDICATOR_DURATION
+	add_child(attack_indicator_timer)
+	attack_indicator_timer.timeout.connect(Callable(self, "_on_attack_indicator_timeout"))
+
+func _show_attack_indicator() -> void:
+	if attack_indicator == null:
+		return
+	var dir := facing_vector
+	if dir.length() <= 0.01:
+		dir = Vector2.DOWN
+	attack_indicator.visible = true
+	attack_indicator.position = dir.normalized() * ATTACK_INDICATOR_DISTANCE
+	attack_indicator.rotation = dir.angle()
+	attack_indicator_timer.start()
+
+func _on_attack_indicator_timeout() -> void:
+	if attack_indicator:
+		attack_indicator.visible = false
