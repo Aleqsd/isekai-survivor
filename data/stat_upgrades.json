@@ -1,0 +1,102 @@
+[
+  {
+    "id": "atk_percent",
+    "name": "Sharpened Instincts",
+    "description": "+15% Attack Power"
+  },
+  {
+    "id": "hp_percent",
+    "name": "Resilient Spirit",
+    "description": "+20% Max HP"
+  },
+  {
+    "id": "spd_percent",
+    "name": "Swift Footwork",
+    "description": "+12% Move Speed"
+  },
+  {
+    "id": "loot_radius_percent",
+    "name": "Magnetic Pull",
+    "description": "+20% Loot Radius"
+  },
+  {
+    "id": "xp_gain_percent",
+    "name": "Scholar's Focus",
+    "description": "+15% XP Gain"
+  },
+  {
+    "id": "attack_speed_percent",
+    "name": "Rapid Strikes",
+    "description": "+12% Attack Speed"
+  },
+  {
+    "id": "crit_chance",
+    "name": "Predator's Eye",
+    "description": "+5% Critical Chance"
+  },
+  {
+    "id": "crit_damage",
+    "name": "Fatal Precision",
+    "description": "+30% Critical Damage"
+  },
+  {
+    "id": "attack_range",
+    "name": "Longshot",
+    "description": "+12% Attack Range"
+  },
+  {
+    "id": "cooldown_reduction",
+    "name": "Temporal Mastery",
+    "description": "-8% Cooldowns"
+  },
+  {
+    "id": "aoe_radius",
+    "name": "Arcane Bloom",
+    "description": "+18% Area of Effect"
+  },
+  {
+    "id": "life_regen",
+    "name": "Second Wind",
+    "description": "+2 HP per second"
+  },
+  {
+    "id": "damage_reduction",
+    "name": "Iron Resolve",
+    "description": "+6% Damage Reduction"
+  },
+  {
+    "id": "pickup_magnet",
+    "name": "Treasure Sense",
+    "description": "+30% Pickup Magnet"
+  },
+  {
+    "id": "move_speed_flat",
+    "name": "Battle Dash",
+    "description": "+20 Flat Move Speed"
+  },
+  {
+    "id": "bonus_xp_boss",
+    "name": "Boss Study",
+    "description": "+10% Bonus Boss XP"
+  },
+  {
+    "id": "duplicate_projectiles",
+    "name": "Echo Shot",
+    "description": "10% Chance to Duplicate Attacks"
+  },
+  {
+    "id": "flat_damage",
+    "name": "Power Surge",
+    "description": "+6 Flat Damage"
+  },
+  {
+    "id": "projectile_speed",
+    "name": "Tailwind",
+    "description": "+10% Projectile Speed"
+  },
+  {
+    "id": "projectile_size",
+    "name": "Expanding Force",
+    "description": "+8% Projectile Size"
+  }
+]

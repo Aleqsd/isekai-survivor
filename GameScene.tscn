@@ -1,0 +1,62 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource path="res://scripts/GameScene.gd" type="Script" id=1]
+[ext_resource path="res://scripts/GameManager.gd" type="Script" id=2]
+[ext_resource path="res://scripts/EnemySpawner.gd" type="Script" id=3]
+[ext_resource path="res://ui/HUD.tscn" type="PackedScene" id=4]
+[ext_resource path="res://ui/LevelUpPopup.tscn" type="PackedScene" id=5]
+[ext_resource path="res://collectibles/XPGem.tscn" type="PackedScene" id=6]
+[ext_resource path="res://enemies/EnemyScout.tscn" type="PackedScene" id=7]
+[ext_resource path="res://enemies/EnemyBrute.tscn" type="PackedScene" id=8]
+[ext_resource path="res://enemies/EnemyLurker.tscn" type="PackedScene" id=9]
+[ext_resource path="res://enemies/EnemySentinel.tscn" type="PackedScene" id=10]
+[ext_resource path="res://enemies/Boss.tscn" type="PackedScene" id=11]
+[ext_resource path="res://assets/map/dungeon_tiles.tres" type="TileSet" id=12]
+[ext_resource path="res://scripts/DungeonMap.gd" type="Script" id=13]
+
+[node name="GameScene" type="Node2D"]
+script = ExtResource("1")
+
+[node name="Ground" type="Node2D" parent="."]
+
+[node name="DungeonTileMap" type="TileMap" parent="Ground"]
+tile_set = ExtResource("12")
+cell_quadrant_size = 16
+format = 1
+script = ExtResource("13")
+
+[node name="Background" type="Polygon2D" parent="Ground"]
+z_index = -1
+polygon = PackedVector2Array(-640, -640, 640, -640, 640, 640, -640, 640)
+color = Color(0.07, 0.11, 0.08, 1)
+
+[node name="PlayerRoot" type="Node2D" parent="."]
+
+[node name="EnemySpawner" type="Node" parent="."]
+script = ExtResource("3")
+enemy_scenes = [ExtResource("7"), ExtResource("8"), ExtResource("9"), ExtResource("10")]
+boss_scene = ExtResource("11")
+boss_drop_table = [{
+"name": "Hunter Bow",
+"rarity": "blue",
+"stats": {"atk": 8},
+"effects": ["+5% crit chance"]
+}, {
+"name": "Mage Robe",
+"rarity": "purple",
+"stats": {"hp": 30},
+"effects": ["-5% cooldown"]
+}, {
+"name": "Warrior Crest",
+"rarity": "orange",
+"stats": {"atk": 5, "hp": 40},
+"effects": ["+10% damage reduction"]
+}]
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("2")
+xp_gem_scene = ExtResource("6")
+
+[node name="UIManager" parent="." instance=ExtResource("4")]
+
+[node name="LevelUpUI" parent="." instance=ExtResource("5")]
