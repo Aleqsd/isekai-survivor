@@ -73,8 +73,8 @@ func _finalize_setup() -> void:
 	player.game_manager = self
 	ui_manager.game_manager = self
 	level_up_ui.hide_popup()
-	ui_manager.update_health(player.current_hp, player.max_hp)
-	ui_manager.update_xp(player.current_xp, player.xp_required, player.level)
+	ui_manager.call_deferred("update_health", player.current_hp, player.max_hp)
+	ui_manager.call_deferred("update_xp", player.current_xp, player.xp_required, player.level)
 	setup_complete = true
 
 ## Loads stat upgrade definitions from disk for later random selection.

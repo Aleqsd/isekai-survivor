@@ -10,6 +10,7 @@ extends TileMap
 @export var wall_source_id: int = 1
 @export var wall_atlas_coord: Vector2i = Vector2i.ZERO
 func _ready() -> void:
+	await get_tree().process_frame
 	clear()
 	_build_floor()
 	_build_walls()
